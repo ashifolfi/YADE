@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using YADE.Resource;
 
 namespace YADE.CTexture
 {
     public class FileSystem
     {
-        public CTextureFile parseFile()
+        public CTDefResource parseFile()
         {
-            return new CTextureFile();
+            return new CTDefResource("lmao", new Dictionary<string, Resource.CTexture>());
         }
 
-        public void saveCTexDefinitions(CTextureFile tosave)
+        public void saveCTexDefinitions(CTDefResource tosave)
         {
 
         }

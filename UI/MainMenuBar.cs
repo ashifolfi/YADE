@@ -1,5 +1,6 @@
 ﻿using System;
 using ImGuiNET;
+using YADE;
 
 namespace YADE.UI
 {
@@ -13,7 +14,21 @@ namespace YADE.UI
             {
                 ImGui.MenuItem("New");
                 ImGui.Separator();
-                ImGui.MenuItem("Open Archive");
+                if (ImGui.MenuItem("Open Archive"))
+                {
+                    // Testing archive file
+                    Resource.Archive archive = new Resource.Archive("Test archive", "Test path");
+                    archive.fileList = new List<Resource.ArchiveItem>() {
+                        new Resource.ArchiveResource("LUA_FILE", "/LUA_FILE", "Script", new Resource.GenericResource("LUA_FILE")),
+                        new Resource.ArchiveResource("Graphic.png", "/Graphic.png", "Graphic", new Resource.GenericResource("Graphic.png")),
+                        new Resource.ArchiveDirectory("Test", "/Test", "Directory", new List<Resource.ArchiveItem>()
+                        {
+                            new Resource.ArchiveResource("LUA_FILE", "/Test/LUA_FILE", "Script", new Resource.GenericResource("LUA_FILE")),
+                            new Resource.ArchiveResource("Graphic.png", "/Test/Graphic.png", "Graphic", new Resource.GenericResource("Graphic.png")),
+                        }),
+                    };
+                    Game1.openEditors.Add(new Archive.Editor(archive, Convert.ToString(Game1.openEditors.Count()+1)));
+                }
                 ImGui.MenuItem("Open Directory");
                 ImGui.Separator();
                 ImGui.MenuItem("Save");

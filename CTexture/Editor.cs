@@ -1,12 +1,13 @@
 ﻿using System;
 using ImGuiNET;
 using Vector2 = System.Numerics.Vector2;
+using YADE.Resource;
 
 namespace YADE.CTexture
 {
     public class Editor
     {
-        public CTextureFile currentFile;
+        public CTDefResource currentFile;
         private String windowTitle = "Composite Texture Editor";
 
         public void drawWindow(bool open)
@@ -16,7 +17,7 @@ namespace YADE.CTexture
 
             // Change title to currently active file if one is open
             if (currentFile != null)
-                windowTitle = "Composite Texture Editor - " + currentFile.fileName;
+                windowTitle = "Composite Texture Editor - " + currentFile.resName;
             else
                 windowTitle = "Composite Texture Editor";
 

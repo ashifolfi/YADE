@@ -9,20 +9,21 @@ namespace YADE.UI
 
         public static void drawWindow()
         {
-            ImGui.SetNextWindowSize(new System.Numerics.Vector2(300, 200), ImGuiCond.Always);
-            ImGui.Begin("About YADE", ref is_open, ImGuiWindowFlags.NoResize);
-
-            ImGui.Text("Yet Another Doom Editor");
-            ImGui.Text("Version 1.0");
-            ImGui.Separator();
-            ImGui.Text("Created by Ashifolfi in C# and ImGui");
-            ImGui.Separator();
-            if (ImGui.Button("Close"))
+            ImGui.SetNextWindowSize(new System.Numerics.Vector2(300, 150), ImGuiCond.Always);
+            if (ImGui.Begin("About YADE", ref is_open, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse))
             {
-                is_open = false;
-            }
+                ImGui.Text("Yet Another Doom Editor");
+                ImGui.Text("Version 1.0");
+                ImGui.Separator();
+                ImGui.Text("Created by Ashifolfi in C# and ImGui");
+                ImGui.Separator();
+                if (ImGui.Button("Close"))
+                {
+                    is_open = false;
+                }
 
-            ImGui.End();
+                ImGui.End();
+            }
         }
     }
 }

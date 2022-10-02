@@ -10,7 +10,7 @@ namespace YADE.UI
         public static void drawWindow()
         {
             ImGui.SetNextWindowSize(new System.Numerics.Vector2(300, 150), ImGuiCond.Always);
-            if (ImGui.Begin("About YADE", ref is_open, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse))
+            if (ImGui.Begin("About YADE", ref is_open, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoDocking))
             {
                 ImGui.Text("Yet Another Doom Editor");
                 ImGui.Text("Version 1.0");

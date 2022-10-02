@@ -1,6 +1,10 @@
-﻿using System;
+﻿//#define DEBUG_EXTRA
+// uncomment the above to print patch adds
+using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using YADE.Resource;
+using Vector2 = System.Numerics.Vector2;
 
 namespace YADE.CTexture
 {
@@ -30,40 +34,44 @@ namespace YADE.CTexture
 
                 foreach (string line in filecontents)
                 {
-                    // do we match the beginning of a def?
-                    if (Regex.Match(line, @"^WallTexture|Texture").Value != string.Empty)
+                    // skip anything containing a comment
+                    if (Regex.Match(line, @"//").Value == String.Empty)
                     {
-                        // add it.
-                        toadd += line + "\n";
-                    }
-                    else if (Regex.Match(line, @"^.*{").Value != string.Empty)
-                    {
-						if (!insidedef)
-                            insidedef = true;
-                        else
-                            insideparam = true;
-                        toadd += line + "\n";
-                    }
-                    else if (insidedef && Regex.Match(line, @"^.*}").Value != string.Empty)
-                    {
-                        if (!insideparam)
+                        // do we match the beginning of a def?
+                        if (Regex.Match(line, @"^WallTexture|Texture").Value != string.Empty)
                         {
-                            nextline = true;
-                            insidedef = false;
+                            // add it.
+                            toadd += line + "\n";
                         }
-                        else
-                            insideparam = false;
-						toadd += line + "\n";
-                    }
-                    else if (!(line == String.Empty))
-                        toadd += line+"\n";
+                        else if (Regex.Match(line, @"^.*{").Value != string.Empty)
+                        {
+						    if (!insidedef)
+                                insidedef = true;
+                            else
+                                insideparam = true;
+                            toadd += line + "\n";
+                        }
+                        else if (insidedef && Regex.Match(line, @"^.*}").Value != string.Empty)
+                        {
+                            if (!insideparam)
+                            {
+                                nextline = true;
+                                insidedef = false;
+                            }
+                            else
+                                insideparam = false;
+						    toadd += line + "\n";
+                        }
+                        else if (!(line == String.Empty))
+                            toadd += line+"\n";
 
-					if (nextline)
-                    {
-                        nextline = false; insidedef = false; insideparam = false;
-						defs.Add(toadd);
-                        toadd = "";
-					}
+					    if (nextline)
+                        {
+                            nextline = false; insidedef = false; insideparam = false;
+						    defs.Add(toadd);
+                            toadd = "";
+					    }
+                    }
                 }
 
 				// Regex passes on the separated lines
@@ -73,10 +81,13 @@ namespace YADE.CTexture
                     Resource.CTexture texture = new Resource.CTexture("TOCHANGE", new List<CTexPatch>());
 
                     // pass 1: extract root info from starting line
-                    Match rootInfo = Regex.Match(def, @"^WallTexture|Texture\s*""(.*)"",\s*(\d+),\s*(\d+)");
+                    Match rootInfo = Regex.Match(def, @"^(WallTexture|Texture)\s*""(.*)"",\s*(\d+),\s*(\d+)");
 
                     // theoretically the order should never change here
-                    texture.ctexName = rootInfo.Groups[1].Value;
+                    texture.type = rootInfo.Groups[1].Value;
+                    texture.ctexName = rootInfo.Groups[2].Value;
+					texture.size = new Vector2(
+                        Convert.ToInt32(rootInfo.Groups[3].Value), Convert.ToInt32(rootInfo.Groups[4].Value));
 
                     // pass 2: Return of the individual line crawl: Patch info edition
 
@@ -84,9 +95,13 @@ namespace YADE.CTexture
 
                     foreach (Match match in patchinfo)
                     {
-                        // TODO: Actually extract position data properly
-                        CTexPatch patch = new CTexPatch(match.Groups[2].Value, new Vector2(0, 0));
-                        //Console.WriteLine("[CTextureEditor] Added patch " + match.Groups[2].Value + " to texture " + texture.ctexName);
+						CTexPatch patch = new CTexPatch(match.Groups[2].Value,
+                            new Vector2(Convert.ToInt32(match.Groups[3].Value), Convert.ToInt32(match.Groups[4].Value)));
+
+                        // TODO: Implement extra parameters for patches
+#if DEBUG_EXTRA
+                        Console.WriteLine("[CTextureEditor] Added patch " + match.Groups[2].Value + " to texture " + texture.ctexName);
+#endif
                         texture.patchList.Add(patch);
                     }
 

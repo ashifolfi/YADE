@@ -59,7 +59,7 @@ namespace YADE.UI
             {
 				if (ImGui.MenuItem("Test CTexture Editor"))
 				{
-                    Game1.editor1.loadDefinitions(CTexture.FileSystem.parseFile("TEXTURES.jcz", "TEXTURES.jcz"));
+                    Game1.editor1 = new CTexture.Editor("MRCE");
 				}
 				ImGui.EndMenu();
             }

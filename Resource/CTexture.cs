@@ -1,7 +1,9 @@
 ﻿using System;
+using Vector2 = System.Numerics.Vector2;
 
 namespace YADE.Resource
 {
+
     public class CTDefResource : GenericResource // Inherit from generic resource
     {
         public CTDefResource(string name, Dictionary<String, CTexture> texlist) : base(name)
@@ -22,6 +24,8 @@ namespace YADE.Resource
         }
 
         public string ctexName;
+        public String type;
+        public System.Numerics.Vector2 size;
         public List<CTexPatch> patchList;
     }
 

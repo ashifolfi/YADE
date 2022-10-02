@@ -15,14 +15,14 @@ namespace YADE.Resource
     // Custom resource classes for the internal components of a CTexture
     public class CTexture
     {
-        public CTexture(string name, Dictionary<string, CTexPatch> plist)
+        public CTexture(string name, List<CTexPatch> plist)
         {
             ctexName = name;
             patchList = plist;
         }
 
         public string ctexName;
-        public Dictionary<String, CTexPatch> patchList;
+        public List<CTexPatch> patchList;
     }
 
     public class CTexPatch
@@ -33,8 +33,21 @@ namespace YADE.Resource
             position = pos;
         }
 
+        // base info
         public string patchName;
         public Vector2 position;
+
+        // Extra info
+        public bool flipX;
+        public bool flipY;
+        public bool useOffsets;
+
+        // public TYPE rotation;
+        // public TYPE translation;
+
+        // public TYPE blend;
+        public float alpha;
+        public string style;
     }
 }
 

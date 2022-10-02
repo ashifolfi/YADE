@@ -55,6 +55,14 @@ namespace YADE.UI
                 }
                 ImGui.EndMenu();
             }
+            if (ImGui.BeginMenu("DEBUG"))
+            {
+				if (ImGui.MenuItem("Test CTexture Editor"))
+				{
+                    Game1.editor1.loadDefinitions(CTexture.FileSystem.parseFile("TEXTURES.jcz", "TEXTURES.jcz"));
+				}
+				ImGui.EndMenu();
+            }
             ImGui.EndMainMenuBar();
         }
 

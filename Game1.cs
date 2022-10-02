@@ -19,12 +19,15 @@ namespace YADE
 
         static public uint dockid;
 
+        static public CTexture.Editor editor1 = new CTexture.Editor();
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = 1024;
             _graphics.PreferredBackBufferHeight = 768;
             _graphics.PreferMultiSampling = true;
+            Window.AllowUserResizing = true;
 
             IsMouseVisible = true;
         }
@@ -69,6 +72,10 @@ namespace YADE
                 else
                     editor.drawWindow();
             }
+
+            editor1.drawWindow(true);
+
+            ImGui.ShowDemoWindow();
 
             // Call AfterLayout now to finish up and draw all the things
             _imGuiRenderer.AfterLayout();

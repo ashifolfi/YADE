@@ -52,11 +52,13 @@ namespace YADE.Archive
         {
             if (ImGui.BeginChild("aclist", new System.Numerics.Vector2(500, ImGui.GetWindowHeight() - 4)))
             {
-                if (ImGui.BeginTable("filelist", 2,
+                if (ImGui.BeginTable("filelist", 3,
                     ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.NoBordersInBody))
                 {
-                    ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.NoHide);
-                    ImGui.TableSetupColumn("Type", ImGuiTableColumnFlags.WidthFixed, 20);
+					ImGui.TableSetupColumn("ID", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHide
+                        | ImGuiTableColumnFlags.NoResize, 15);
+					ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.NoHide);
+                    ImGui.TableSetupColumn("Type", ImGuiTableColumnFlags.NoHide);
 
                     ImGui.TableHeadersRow();
 

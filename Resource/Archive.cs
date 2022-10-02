@@ -28,14 +28,20 @@ namespace YADE.Resource
         public string fileType;
         public string fullPath;
 
-        public virtual void drawNode()
+        public virtual Boolean drawNode()
         {
+            bool isSelected = false;
+
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.TreeNodeEx(fileName, ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.Bullet | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.SpanFullWidth);
+            // TODO: Implement ID numbers
+			ImGui.TreeNodeEx("", ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.Bullet | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.SpanFullWidth);
+            ImGui.TableNextColumn();
+            ImGui.Selectable(fileName, isSelected, ImGuiSelectableFlags.SpanAllColumns | ImGuiSelectableFlags.AllowItemOverlap);
             ImGui.TableNextColumn();
             ImGui.Text(fileType);
-        }
+            return isSelected;
+		}
     }
 
     public class ArchiveDirectory : ArchiveItem
@@ -47,24 +53,30 @@ namespace YADE.Resource
 
         List<ArchiveItem> contents;
 
-        public override void drawNode()
+        public override Boolean drawNode()
         {
+            bool isSelected = false; 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
+			bool open = ImGui.TreeNodeEx("", ImGuiTreeNodeFlags.SpanFullWidth);
 
-            bool open = ImGui.TreeNodeEx(fileName, ImGuiTreeNodeFlags.SpanFullWidth);
             ImGui.TableNextColumn();
+            ImGui.Selectable(fileName, isSelected, ImGuiSelectableFlags.SpanAllColumns | ImGuiSelectableFlags.AllowItemOverlap);
+
+			ImGui.TableNextColumn();
             ImGui.Text(fileType);
 
             if (open)
             {
                 foreach (ArchiveItem archiveItem in contents)
                 {
+                    // TODO: Figure out how to return that a subnode is selected
                     archiveItem.drawNode();
                 }
                 ImGui.TreePop();
             }
-        }
+            return isSelected;
+		}
     }
 
     public class ArchiveResource : ArchiveItem

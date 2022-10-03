@@ -9,11 +9,8 @@ namespace YADE
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private ImGuiRenderer _imGuiRenderer;
-
-        private Texture2D _xnaTexture;
-        private IntPtr _imGuiTexture;
+        public static GraphicsDeviceManager _graphics;
+        public static ImGuiRenderer _imGuiRenderer;
 
         static public List<Archive.Editor> openEditors = new List<Archive.Editor>();
 
@@ -26,7 +23,7 @@ namespace YADE
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = 1024;
             _graphics.PreferredBackBufferHeight = 768;
-            _graphics.PreferMultiSampling = true;
+            //_graphics.PreferMultiSampling = true;
             Window.AllowUserResizing = true;
 
             IsMouseVisible = true;

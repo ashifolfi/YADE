@@ -1,16 +1,28 @@
 ﻿//#define DEBUG_EXTRA
 // uncomment the above to print patch adds
+
+/// <summary>
+/// Contains all definitions related to the CTexture Editor FileSystem component
+/// </summary>
+
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.IO;
+using FileTypeChecker;
 using System.Text.RegularExpressions;
 using YADE.Resource;
 using Vector2 = System.Numerics.Vector2;
+using FileTypeChecker.Abstracts;
+using FileTypeChecker.Types;
 
 namespace YADE.CTexture
 {
     public class FileSystem
     {
+        /// <summary>
+        /// Parse Composite Texture Definition files
+        /// </summary>
+        /// <param name="name">name of the definition</param>
+        /// <param name="path">Path to look for said definition</param>
+        /// <returns>CTexture Resource data</returns>
         public static CTDefResource parseFile(string name, string path)
         {
             CTDefResource resource = new CTDefResource(name, new Dictionary<string, Resource.CTexture>());
@@ -150,11 +162,21 @@ namespace YADE.CTexture
             return resource;
         }
 
+        /// <summary>
+        /// TODO: Fill this out!
+        /// </summary>
+        /// <param name="tosave"></param>
         public void saveCTexDefinitions(CTDefResource tosave)
         {
 
         }
 
+        /// <summary>
+        /// Locate a patch/graphic and load it into a texture
+        /// </summary>
+        /// <param name="name">Patch name to look for</param>
+        /// <param name="path">TODO: REMOVE THIS | path to the folder where we should look</param>
+        /// <returns>The requested patch texture data (when found) or a blank texture data (When not found)</returns>
         public static Texture2D locatePatchGraphic(string name, string path)
         {
             // load the file as a filestream
@@ -163,21 +185,36 @@ namespace YADE.CTexture
             {
                 // IDEA: This could just iterate through a list of known filetypes and directories tbh
                 // little bit of a mess here but we need to wildcard the name because of extensions
-                FileInfo[] fi = System.IO.Directory.GetFiles(path + "/*/" + name + "*");
+                DirectoryInfo dir = new DirectoryInfo(path);
+#if WINDOWS
+                FileInfo[] fi = dir.GetFiles(@"*\\" + name + @"*");
+#else
+                FileInfo[] fi = dir.GetFiles(@"*/" + name + @"*");
+#endif
                 if (fi[1] == null)
                 {
                     // just in case this turns out to be a wackass edgecase
                     patchStream = File.OpenRead(path + "/Patches/" + name);
                 }
                 else
-                    patchStream = File.OpenRead(fi[1]);
+                    patchStream = File.OpenRead(fi[1].FullName);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("[CTexture] Patch loading failed! Does the patch exist?");
                 return new Texture2D(Game1._graphics.GraphicsDevice, 1, 1);
             }
-            return Texture2D.FromStream(Game1._graphics.GraphicsDevice, patchStream); ;
+            // determine what type to return from mimetype on the file
+            // kinda dangerous because if we hit a file that isn't a graphics lump but also not a standard picture
+            // we are GOING TO CRASH due to my lack of any error handling in DPicture.cs right now
+            if (FileTypeValidator.IsImage(patchStream))
+                return Texture2D.FromStream(Game1._graphics.GraphicsDevice, patchStream);
+            else
+            {
+                // not an image? ok let's assume it's a DPicture format
+                DPicture dPicture = new DPicture(patchStream);
+                return dPicture.texture;
+            }
         }
     }
 }

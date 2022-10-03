@@ -7,6 +7,9 @@ using Num = System.Numerics;
 
 namespace YADE
 {
+    /// <summary>
+    /// Main class that handles the entire editor
+    /// </summary>
     public class Game1 : Game
     {
         // I need this for things

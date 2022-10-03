@@ -4,8 +4,14 @@ using YADE;
 
 namespace YADE.UI
 {
+    /// <summary>
+    /// Main Menu Bar component
+    /// </summary>
     public class MainMenuBar
     {
+        /// <summary>
+        /// Draw the menu bar
+        /// </summary>
         static public void drawMenuBar()
         {
             ImGui.BeginMainMenuBar();
@@ -66,6 +72,9 @@ namespace YADE.UI
             ImGui.EndMainMenuBar();
         }
 
+        /// <summary>
+        /// TODO: Add recent file loading/logging
+        /// </summary>
         static public void drawRecentFiles()
         {
 

@@ -3,10 +3,19 @@ using ImGuiNET;
 
 namespace YADE.UI
 {
+    /// <summary>
+    /// About YADE box class
+    /// </summary>
     public class AboutWindow
     {
+        /// <summary>
+        /// Window open status
+        /// </summary>
         public static bool is_open = false;
 
+        /// <summary>
+        /// Draw the about box
+        /// </summary>
         public static void drawWindow()
         {
             ImGui.SetNextWindowSize(new System.Numerics.Vector2(300, 150), ImGuiCond.Always);

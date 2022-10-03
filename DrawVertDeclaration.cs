@@ -3,10 +3,19 @@ using ImGuiNET;
 
 namespace YADE
 {
+    /// <summary>
+    /// UNKNOWN: Provided by the ImGuiNET XNA Example
+    /// </summary>
     public static class DrawVertDeclaration
     {
+        /// <summary>
+        /// UNKNOWN: Provided by the ImGuiNET XNA Example
+        /// </summary>
         public static readonly VertexDeclaration Declaration;
 
+        /// <summary>
+        /// UNKNOWN: Provided by the ImGuiNET XNA Example
+        /// </summary>
         public static readonly int Size;
 
         static DrawVertDeclaration()

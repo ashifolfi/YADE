@@ -1,4 +1,8 @@
-﻿using ImGuiNET;
+﻿/// <summary>
+/// Contains all definitions related to the CTexture Editor GUI component
+/// </summary>
+
+using ImGuiNET;
 using Vector2 = System.Numerics.Vector2;
 using YADE.Resource;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,8 +10,15 @@ using System.IO;
 
 namespace YADE.CTexture
 {
+	/// <summary>
+	/// Main CTexture Editor Class
+	/// </summary>
 	public class Editor
     {
+		/// <summary>
+		/// Constructor for CTexture Editor
+		/// </summary>
+		/// <param name="path">Path to search for definitions inside of</param>
 		public Editor(string path)
         {
 			curArchivePath = path;
@@ -27,6 +38,10 @@ namespace YADE.CTexture
 		private string windowTitle = "Texture Editor";
 		private List<EditorTab> defTabs = new List<EditorTab>();
 
+		/// <summary>
+		/// Draw main CTexture Editor window
+		/// </summary>
+		/// <param name="open">boolean for window open status</param>
         public void drawWindow(bool open)
         {
             ImGui.SetNextWindowSize(new Vector2(300, 300), ImGuiCond.FirstUseEver);
@@ -45,24 +60,45 @@ namespace YADE.CTexture
 			ImGui.End();
         }
 
+		/// <summary>
+		/// Load a definition file into a new tab
+		/// </summary>
+		/// <param name="resfile">CTexture Definition data</param>
         public void loadDefinitions(CTDefResource resfile)
         {
 			defTabs.Add(new EditorTab(resfile));
         }
     }
 
+	/// <summary>
+	/// Class for CTexture Editor Tabs
+	/// </summary>
     public class EditorTab
     {
+		/// <summary>
+		/// Constructor for EditorTabs
+		/// </summary>
+		/// <param name="resfile">CTexture Definition data</param>
         public EditorTab(CTDefResource resfile)
         {
             currentFile = resfile;
         }
 
+		/// <summary>
+		/// the file for this tab
+		/// </summary>
 	    public CTDefResource currentFile;
+		/// <summary>
+		/// is the editor open
+		/// </summary>
 		public bool is_open = false;
 
 		private List<patchNode> curPatchList = new List<patchNode>();
 
+		/// <summary>
+		/// Draw the Composite Texture Editor Tab
+		/// </summary>
+		/// <param name="path">Directory path for our archive</param>
 		public void draw(string path)
         {
 			// and here we assemble the ui
@@ -88,6 +124,11 @@ namespace YADE.CTexture
             }
         }
 
+		/// <summary>
+		/// function to load a texture from a patch list
+		/// </summary>
+		/// <param name="plist">patch list</param>
+		/// <param name="path">TODO: We should pull from all open archives/directories</param>
 		public void loadTexture(List<CTexPatch> plist, string path)
 		{
 			curPatchList = new List<patchNode>();
@@ -166,9 +207,16 @@ namespace YADE.CTexture
 		}
 	}
 
-	public class texNode
+    /// <summary>
+    /// Class for the CTexture editor texture list
+    /// </summary>
+    public class texNode
 	{
-		public static bool drawNode(string name, string size, string type)
+        /// <summary>
+        /// Used by main editor to draw the node into the texture list
+        /// </summary>
+        /// <returns>Boolean corresponding to selection status</returns>
+        public static bool drawNode(string name, string size, string type)
 		{
 			bool isSelected = false;
 
@@ -183,8 +231,16 @@ namespace YADE.CTexture
 		}
 	}
 
+	/// <summary>
+	/// Class for the CTexture editor patch list
+	/// </summary>
 	public class patchNode
     {
+		/// <summary>
+		/// Constructor for patch list entries
+		/// </summary>
+		/// <param name="res">resource pointer</param>
+		/// <param name="path">path to patch</param>
         public patchNode(Resource.CTexPatch res, string path)
         {
             patch = res;
@@ -192,10 +248,23 @@ namespace YADE.CTexture
 			patchPtr = Game1._imGuiRenderer.BindTexture(patchTex);
         }
 
+		/// <summary>
+		/// resource pointer
+		/// </summary>
         public Resource.CTexPatch patch;
+		/// <summary>
+		/// patch graphic pointer
+		/// </summary>
 		public Texture2D patchTex;
+		/// <summary>
+		/// integer pointer for ImGui
+		/// </summary>
 		public IntPtr patchPtr;
 
+		/// <summary>
+		/// Used by main editor to draw the node into the patch list
+		/// </summary>
+		/// <returns>Boolean corresponding to selection status</returns>
         public virtual bool drawNode()
 		{
 			bool isSelected = false;

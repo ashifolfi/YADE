@@ -3,20 +3,36 @@ using ImGuiNET;
 
 namespace YADE.Archive
 {
-    // This editor works differently. the close button actually just closes the file entirely
+    /// <summary>
+	/// Main Archive Editor Class
+	/// </summary>
     public class Editor
     {
+        /// <summary>
+        /// Constructor for Main Archive Editor Class
+        /// </summary>
+        /// <param name="file">Archive data to load</param>
+        /// <param name="id">id for ImGui tabs</param>
         public Editor(Resource.Archive file, string id)
         {
             archive = file;
             strid = id;
         }
 
+        /// <summary>
+        /// Archive data pointer
+        /// </summary>
         public Resource.Archive archive;
+        /// <summary>
+        /// Window open statuc
+        /// </summary>
         public bool is_open = true;
 
         private string strid;
 
+        /// <summary>
+		/// Draw main Archive Editor Window
+		/// </summary>
         public void drawWindow()
         {
             ImGui.SetWindowSize(new System.Numerics.Vector2(500, 500), ImGuiCond.Appearing);

@@ -1,0 +1,403 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>YADE</name>
+    </assembly>
+    <members>
+        <member name="T:YADE.Archive.Editor">
+            <summary>
+            Main Archive Editor Class
+            </summary>
+        </member>
+        <member name="M:YADE.Archive.Editor.#ctor(YADE.Resource.Archive,System.String)">
+            <summary>
+            Constructor for Main Archive Editor Class
+            </summary>
+            <param name="file">Archive data to load</param>
+            <param name="id">id for ImGui tabs</param>
+        </member>
+        <member name="F:YADE.Archive.Editor.archive">
+            <summary>
+            Archive data pointer
+            </summary>
+        </member>
+        <member name="F:YADE.Archive.Editor.is_open">
+            <summary>
+            Window open statuc
+            </summary>
+        </member>
+        <member name="M:YADE.Archive.Editor.drawWindow">
+            <summary>
+            Draw main Archive Editor Window
+            </summary>
+        </member>
+        <member name="T:YADE.Archive.FileSystem">
+            <summary>
+            FileSystem component of the archive editor
+            </summary>
+        </member>
+        <member name="M:YADE.Archive.FileSystem.locateArchiveFile">
+            <summary>
+            TODO: this is empty
+            </summary>
+        </member>
+        <member name="T:YADE.CTexture.Editor">
+            <summary>
+            Main CTexture Editor Class
+            </summary>
+        </member>
+        <member name="M:YADE.CTexture.Editor.#ctor(System.String)">
+            <summary>
+            Constructor for CTexture Editor
+            </summary>
+            <param name="path">Path to search for definitions inside of</param>
+        </member>
+        <member name="M:YADE.CTexture.Editor.drawWindow(System.Boolean)">
+            <summary>
+            Draw main CTexture Editor window
+            </summary>
+            <param name="open">boolean for window open status</param>
+        </member>
+        <member name="M:YADE.CTexture.Editor.loadDefinitions(YADE.Resource.CTDefResource)">
+            <summary>
+            Load a definition file into a new tab
+            </summary>
+            <param name="resfile">CTexture Definition data</param>
+        </member>
+        <member name="T:YADE.CTexture.EditorTab">
+            <summary>
+            Class for CTexture Editor Tabs
+            </summary>
+        </member>
+        <member name="M:YADE.CTexture.EditorTab.#ctor(YADE.Resource.CTDefResource)">
+            <summary>
+            Constructor for EditorTabs
+            </summary>
+            <param name="resfile">CTexture Definition data</param>
+        </member>
+        <member name="F:YADE.CTexture.EditorTab.currentFile">
+            <summary>
+            the file for this tab
+            </summary>
+        </member>
+        <member name="F:YADE.CTexture.EditorTab.is_open">
+            <summary>
+            is the editor open
+            </summary>
+        </member>
+        <member name="M:YADE.CTexture.EditorTab.draw(System.String)">
+            <summary>
+            Draw the Composite Texture Editor Tab
+            </summary>
+            <param name="path">Directory path for our archive</param>
+        </member>
+        <member name="M:YADE.CTexture.EditorTab.loadTexture(System.Collections.Generic.List{YADE.Resource.CTexPatch},System.String)">
+            <summary>
+            function to load a texture from a patch list
+            </summary>
+            <param name="plist">patch list</param>
+            <param name="path">TODO: We should pull from all open archives/directories</param>
+        </member>
+        <member name="T:YADE.CTexture.texNode">
+            <summary>
+            Class for the CTexture editor texture list
+            </summary>
+        </member>
+        <member name="M:YADE.CTexture.texNode.drawNode(System.String,System.String,System.String)">
+            <summary>
+            Used by main editor to draw the node into the texture list
+            </summary>
+            <returns>Boolean corresponding to selection status</returns>
+        </member>
+        <member name="T:YADE.CTexture.patchNode">
+            <summary>
+            Class for the CTexture editor patch list
+            </summary>
+        </member>
+        <member name="M:YADE.CTexture.patchNode.#ctor(YADE.Resource.CTexPatch,System.String)">
+            <summary>
+            Constructor for patch list entries
+            </summary>
+            <param name="res">resource pointer</param>
+            <param name="path">path to patch</param>
+        </member>
+        <member name="F:YADE.CTexture.patchNode.patch">
+            <summary>
+            resource pointer
+            </summary>
+        </member>
+        <member name="F:YADE.CTexture.patchNode.patchTex">
+            <summary>
+            patch graphic pointer
+            </summary>
+        </member>
+        <member name="F:YADE.CTexture.patchNode.patchPtr">
+            <summary>
+            integer pointer for ImGui
+            </summary>
+        </member>
+        <member name="M:YADE.CTexture.patchNode.drawNode">
+            <summary>
+            Used by main editor to draw the node into the patch list
+            </summary>
+            <returns>Boolean corresponding to selection status</returns>
+        </member>
+        <member name="M:YADE.CTexture.FileSystem.parseFile(System.String,System.String)">
+            <summary>
+            Parse Composite Texture Definition files
+            </summary>
+            <param name="name">name of the definition</param>
+            <param name="path">Path to look for said definition</param>
+            <returns>CTexture Resource data</returns>
+        </member>
+        <member name="M:YADE.CTexture.FileSystem.saveCTexDefinitions(YADE.Resource.CTDefResource)">
+            <summary>
+            TODO: Fill this out!
+            </summary>
+            <param name="tosave"></param>
+        </member>
+        <member name="M:YADE.CTexture.FileSystem.locatePatchGraphic(System.String,System.String)">
+            <summary>
+            Locate a patch/graphic and load it into a texture
+            </summary>
+            <param name="name">Patch name to look for</param>
+            <param name="path">TODO: REMOVE THIS | path to the folder where we should look</param>
+            <returns>The requested patch texture data (when found) or a blank texture data (When not found)</returns>
+        </member>
+        <member name="T:YADE.DrawVertDeclaration">
+            <summary>
+            UNKNOWN: Provided by the ImGuiNET XNA Example
+            </summary>
+        </member>
+        <member name="F:YADE.DrawVertDeclaration.Declaration">
+            <summary>
+            UNKNOWN: Provided by the ImGuiNET XNA Example
+            </summary>
+        </member>
+        <member name="F:YADE.DrawVertDeclaration.Size">
+            <summary>
+            UNKNOWN: Provided by the ImGuiNET XNA Example
+            </summary>
+        </member>
+        <member name="T:YADE.Game1">
+            <summary>
+            Main class that handles the entire editor
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:YADE.ImGuiRenderer" -->
+        <member name="M:YADE.ImGuiRenderer.RebuildFontAtlas">
+            <summary>
+            Creates a texture and loads the font data from ImGui. Should be called when the <see cref="T:Microsoft.Xna.Framework.Graphics.GraphicsDevice" /> is initialized but before any rendering is done
+            </summary>
+        </member>
+        <member name="M:YADE.ImGuiRenderer.BindTexture(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            Creates a pointer to a texture, which can be passed through ImGui calls such as <see cref="M:ImGuiNET.ImGui.Image(System.IntPtr,System.Numerics.Vector2)" />. That pointer is then used by ImGui to let us know what texture to draw
+            </summary>
+        </member>
+        <member name="M:YADE.ImGuiRenderer.UnbindTexture(System.IntPtr)">
+            <summary>
+            Removes a previously created texture pointer, releasing its reference and allowing it to be deallocated
+            </summary>
+        </member>
+        <member name="M:YADE.ImGuiRenderer.BeforeLayout(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Sets up ImGui for a new frame, should be called at frame start
+            </summary>
+        </member>
+        <member name="M:YADE.ImGuiRenderer.AfterLayout">
+            <summary>
+            Asks ImGui for the generated geometry data and sends it to the graphics pipeline, should be called after the UI is drawn using ImGui.** calls
+            </summary>
+        </member>
+        <member name="M:YADE.ImGuiRenderer.SetupInput">
+            <summary>
+            Maps ImGui keys to XNA keys. We use this later on to tell ImGui what keys were pressed
+            </summary>
+        </member>
+        <member name="M:YADE.ImGuiRenderer.UpdateEffect(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            Updates the <see cref="T:Microsoft.Xna.Framework.Graphics.Effect" /> to the current matrices and texture
+            </summary>
+        </member>
+        <member name="M:YADE.ImGuiRenderer.UpdateInput">
+            <summary>
+            Sends XNA input state to ImGui
+            </summary>
+        </member>
+        <member name="M:YADE.ImGuiRenderer.RenderDrawData(ImGuiNET.ImDrawDataPtr)">
+            <summary>
+            Gets the geometry as set up by ImGui and sends it to the graphics device
+            </summary>
+        </member>
+        <member name="T:YADE.Resource.Archive">
+            <summary>
+            Archive resoruce: contains all information related to the contents and info about an archive
+            </summary>
+        </member>
+        <member name="M:YADE.Resource.Archive.#ctor(System.String,System.String)">
+            <summary>
+            Create a new Archive resource object
+            </summary>
+            <param name="name">Name of the archive to look for</param>
+            <param name="path">Path to where it is stored</param>
+        </member>
+        <member name="F:YADE.Resource.Archive.filePath">
+            <summary>
+            Full path to where the file is stored
+            </summary>
+        </member>
+        <member name="F:YADE.Resource.Archive.fileList">
+            <summary>
+            Full list of an archive's contents
+            </summary>
+        </member>
+        <member name="T:YADE.Resource.ArchiveItem">
+            <summary>
+            Archive Item Definition
+            Base class for archive items
+            </summary>
+        </member>
+        <member name="M:YADE.Resource.ArchiveItem.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Create new archive item
+            </summary>
+            <param name="name">Name of archive item</param>
+            <param name="path">Path to item in archive</param>
+            <param name="type">Type of item</param>
+        </member>
+        <member name="F:YADE.Resource.ArchiveItem.fileName">
+            <summary>
+            Name of archive item
+            </summary>
+        </member>
+        <member name="F:YADE.Resource.ArchiveItem.fileType">
+            <summary>
+            Type of archive item
+            </summary>
+        </member>
+        <member name="F:YADE.Resource.ArchiveItem.fullPath">
+            <summary>
+            Full path to archive item within archive
+            </summary>
+        </member>
+        <member name="M:YADE.Resource.ArchiveItem.drawNode">
+            <summary>
+            Used by the archive editor to draw the archive item in a list
+            </summary>
+            <returns>Boolean determining selection status</returns>
+        </member>
+        <member name="T:YADE.Resource.ArchiveDirectory">
+            <summary>
+            Directory type. Requires a special class due to needing some specific items that regular items don't need
+            </summary>
+        </member>
+        <member name="M:YADE.Resource.ArchiveDirectory.#ctor(System.String,System.String,System.String,System.Collections.Generic.List{YADE.Resource.ArchiveItem})">
+            <summary>
+            Create a new Directory type
+            </summary>
+            <param name="name">Name</param>
+            <param name="path">Path to item within archive</param>
+            <param name="type">type</param>
+            <param name="conts">Contents of the directory</param>
+        </member>
+        <member name="F:YADE.Resource.ArchiveDirectory.contents">
+            <summary>
+            Contents of the directory
+            </summary>
+        </member>
+        <member name="M:YADE.Resource.ArchiveDirectory.drawNode">
+            <summary>
+            Used by the archive editor to draw item into a list
+            </summary>
+            <returns>Boolean determining selection status</returns>
+        </member>
+        <member name="T:YADE.Resource.ArchiveResource">
+            <summary>
+            Resource type Item. For the various resources we can load
+            Images, sounds, scripts, etc.
+            
+            Special class so we can have a resource pointer stored inside it
+            </summary>
+        </member>
+        <member name="M:YADE.Resource.ArchiveResource.#ctor(System.String,System.String,System.String,YADE.Resource.GenericResource)">
+            <summary>
+            Create new resource type archive item
+            </summary>
+            <param name="name">Name</param>
+            <param name="path">Path to item in archive</param>
+            <param name="type">Type of item</param>
+            <param name="res">Resource data to store in pointer</param>
+        </member>
+        <member name="F:YADE.Resource.ArchiveResource.resource">
+            <summary>
+            Resource data pointer
+            </summary>
+        </member>
+        <member name="M:YADE.Resource.DPalette.indexToRGB(System.Byte)">
+            <summary>
+            Pulls the RGB values that correspond to the given index's 3 byte slot
+            </summary>
+            <param name="index">Palette index to pull the color from</param>
+            <returns>RGB format colors stored in a Vector3</returns>
+        </member>
+        <member name="T:YADE.Resource.DPHead">
+            <summary>
+            Contains the header data of the patch file
+            </summary>
+        </member>
+        <member name="T:YADE.Resource.DPPost">
+            <summary>
+            Contains a singular column of patch data
+            </summary>
+        </member>
+        <member name="T:YADE.Resource.DPicture">
+            <summary>
+            Resource data class for Doom Graphics Format
+            </summary>
+        </member>
+        <member name="M:YADE.Resource.DPicture.#ctor(System.IO.FileStream)">
+            <summary>
+            Create a new Doom GFX Object from lump data
+            
+            WARNING: THIS CLASS HAS NO ERROR HANDLING AT THIS MOMENT IN TIME!
+            </summary>
+            <param name="lump">FileStream of the graphics lump</param>
+        </member>
+        <member name="M:YADE.Resource.DPicture.toTexture">
+            <summary>
+            Updates the texture field data of the object when ran.
+            </summary>
+        </member>
+        <member name="T:YADE.UI.AboutWindow">
+            <summary>
+            About YADE box class
+            </summary>
+        </member>
+        <member name="F:YADE.UI.AboutWindow.is_open">
+            <summary>
+            Window open status
+            </summary>
+        </member>
+        <member name="M:YADE.UI.AboutWindow.drawWindow">
+            <summary>
+            Draw the about box
+            </summary>
+        </member>
+        <member name="T:YADE.UI.MainMenuBar">
+            <summary>
+            Main Menu Bar component
+            </summary>
+        </member>
+        <member name="M:YADE.UI.MainMenuBar.drawMenuBar">
+            <summary>
+            Draw the menu bar
+            </summary>
+        </member>
+        <member name="M:YADE.UI.MainMenuBar.drawRecentFiles">
+            <summary>
+            TODO: Add recent file loading/logging
+            </summary>
+        </member>
+    </members>
+</doc>

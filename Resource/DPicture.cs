@@ -1,33 +1,19 @@
-using System;
+/// <summary>
+/// Class definitions for the Doom Graphics format resource
+/// 
+/// Also includes the structs for the header and post data
+/// </summary>
+
+using Microsoft.Xna.Framework.Graphics;
 using SkiaSharp;
+using Color = System.Drawing.Color;
+using Vector3 = System.Numerics.Vector3;
 
 namespace YADE.Resource
 {
-    // TODO: Move this out of here.
-    // PLAYPAL loading. used by DPicture to properly display colors from picture lumps
-    public class DPalette {
-        public DPalette(string palpath) {
-            fslink = File.Open(palpath, FileMode.Open);
-        }
-
-        private FileStream fslink;
-
-        // colors returned in vector3 format for ease of conversion
-        public Vector3 indexToRGB(byte index) 
-        {
-            // attempt to read from palette 1 at given byte index
-            byte[] colorbuffer = new byte[3];
-            fslink.Read(colorbuffer, Convert.ToInt32(index)*3, 3);
-
-            Vector3 color = new Vector3(
-                Convert.ToInt32(colorbuffer[1]),
-                Convert.ToInt32(colorbuffer[2]),
-                Convert.ToInt32(colorbuffer[3])
-            );
-
-            return color;
-        }
-    }
+    /// <summary>
+    /// Contains the header data of the patch file
+    /// </summary>
     public struct DPHead
     {
         public UInt16 width; // s: 2 o: 0
@@ -37,6 +23,9 @@ namespace YADE.Resource
         public UInt32[] columnofs; // s: 4*width o: 8
     }
 
+    /// <summary>
+    /// Contains a singular column of patch data
+    /// </summary>
     public struct DPPost
     {
         public byte topdelta; // Length: 1 Offset: 0
@@ -47,6 +36,9 @@ namespace YADE.Resource
         public byte unused2; // size: 1 Offset: 3 + length
     }
 
+    /// <summary>
+    /// Resource data class for Doom Graphics Format
+    /// </summary>
     public class DPicture 
     {
         public DPHead header;
@@ -55,7 +47,12 @@ namespace YADE.Resource
 
         public Texture2D texture;
 
-        // Create new DPicture resource from a lump
+        /// <summary>
+        /// Create a new Doom GFX Object from lump data
+        /// 
+        /// WARNING: THIS CLASS HAS NO ERROR HANDLING AT THIS MOMENT IN TIME!
+        /// </summary>
+        /// <param name="lump">FileStream of the graphics lump</param>
         public DPicture(FileStream lump)
         {
             fslink = lump;
@@ -122,10 +119,17 @@ namespace YADE.Resource
             // at the end of it all attempt to write a texture2d from the data so we can view it
             toTexture();
         }
+
+        /// <summary>
+        /// Updates the texture field data of the object when ran.
+        /// </summary>
         public void toTexture()
         {
             // I couldn't tell you how most of this shit works only that it does.
             texture = new Texture2D(Game1._graphics.GraphicsDevice, header.width, header.height);
+
+            // TODO: This should not be done here
+            DPalette playpal = new DPalette("MRCE/PLAYPAL");
 
             // based on the doom wiki conversion algorithm
             SKBitmap bmp = new SKBitmap(header.width, header.height);
@@ -135,6 +139,11 @@ namespace YADE.Resource
             {
                 int pixelcount = 1;
                 foreach (byte pixel in column.data) {
+                    // call for the playpal index corresponding to this pixel
+                    Vector3 rgbnum = playpal.indexToRGB(pixel);
+                    Color color = Color.FromArgb(255, (int)rgbnum.X, (int)rgbnum.Y, (int)rgbnum.Z);
+                    SKColor.FromHsl(color.GetHue(), color.GetSaturation(), color.GetBrightness());
+
                     bmp.SetPixel(postcount, pixelcount, SKColor.Empty);
                     pixelcount++;
                 }

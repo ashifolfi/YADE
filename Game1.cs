@@ -25,7 +25,7 @@ namespace YADE
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = 1024;
             _graphics.PreferredBackBufferHeight = 768;
-            _graphics.PreferMultiSampling = true;
+            //_graphics.PreferMultiSampling = true;
             Window.AllowUserResizing = true;
 
             IsMouseVisible = true;

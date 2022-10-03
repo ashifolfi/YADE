@@ -1,5 +1,6 @@
 ﻿//#define DEBUG_EXTRA
 // uncomment the above to print patch adds
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -154,9 +155,29 @@ namespace YADE.CTexture
 
         }
 
-        public void locatePatchGraphic(string name)
+        public static Texture2D locatePatchGraphic(string name, string path)
         {
-
+            // load the file as a filestream
+            FileStream patchStream;
+            try
+            {
+                // IDEA: This could just iterate through a list of known filetypes and directories tbh
+                // little bit of a mess here but we need to wildcard the name because of extensions
+                FileInfo[] fi = System.IO.Directory.GetFiles(path + "/*/" + name + "*");
+                if (fi[1] == null)
+                {
+                    // just in case this turns out to be a wackass edgecase
+                    patchStream = File.OpenRead(path + "/Patches/" + name);
+                }
+                else
+                    patchStream = File.OpenRead(fi[1]);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[CTexture] Patch loading failed! Does the patch exist?");
+                return new Texture2D(Game1._graphics.GraphicsDevice, 1, 1);
+            }
+            return Texture2D.FromStream(Game1._graphics.GraphicsDevice, patchStream); ;
         }
     }
 }

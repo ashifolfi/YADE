@@ -1,0 +1,32 @@
+WallTexture "MFTREEBG", 512, 256
+{
+	Patch "FRPIA0", 0, 0
+	Patch "FRPIA0", 224, 48
+	Patch "FRPIA0", 0, 112
+	Patch "FRPIA0", 256, 112
+	Patch "FRPIA0", 128, 168
+	Patch "FRPIA0", 384, 168
+	Patch "FRPIA0", -128, 168
+}
+
+WallTexture "MFTREEB2", 512, 512
+{
+	Patch "FRPIA0", 0, -120
+	Patch "FRPIA0", -128, -344
+	Patch "FRPIA0", 256, -120
+	Patch "FRPIA0", 128, -344
+	Patch "FRPIA0", 128, -64
+	Patch "FRPIA0", 384, -344
+	Patch "FRPIA0", 384, -64
+	Patch "FRPIA0", 0, 112
+	Patch "FRPIA0", -128, -64
+	Patch "FRPIA0", 256, 112
+	Patch "FRPIA0", 128, 168
+	Patch "FRPIA0", 384, 168
+	Patch "FRPIA0", -128, 168
+	Patch "FRPIA0", 0, 368
+	Patch "FRPIA0", 256, 368
+	Patch "FRPIA0", 128, 424
+	Patch "FRPIA0", 384, 424
+	Patch "FRPIA0", -128, 424
+}

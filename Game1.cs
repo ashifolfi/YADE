@@ -9,11 +9,10 @@ namespace YADE
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private ImGuiRenderer _imGuiRenderer;
-
-        private Texture2D _xnaTexture;
-        private IntPtr _imGuiTexture;
+        // I need this for things
+        // probably dangerous to do this though
+        public static GraphicsDeviceManager _graphics;
+        public static ImGuiRenderer _imGuiRenderer;
 
         static public List<Archive.Editor> openEditors = new List<Archive.Editor>();
 
@@ -44,7 +43,7 @@ namespace YADE
 			colors[(int)ImGuiCol.FrameBg]               = new Num.Vector4(0.48f, 0.28f, 0.16f, 0.54f);
 			colors[(int)ImGuiCol.FrameBgHovered]        = new Num.Vector4(0.98f, 0.82f, 0.26f, 0.40f);
 			colors[(int)ImGuiCol.FrameBgActive]         = new Num.Vector4(0.98f, 0.82f, 0.26f, 0.40f);
-			colors[(int)ImGuiCol.TitleBgActive]         = new Num.Vector4(0.48f, 0.28f, 0.16f, 0.54f);
+			colors[(int)ImGuiCol.TitleBgActive]         = new Num.Vector4(0.48f, 0.28f, 0.16f, 1.00f);
 			colors[(int)ImGuiCol.CheckMark]             = new Num.Vector4(0.98f, 0.49f, 0.26f, 1.00f);
 			colors[(int)ImGuiCol.SliderGrab]            = new Num.Vector4(0.98f, 0.49f, 0.26f, 1.00f);
 			colors[(int)ImGuiCol.SliderGrabActive]      = new Num.Vector4(0.98f, 0.66f, 0.26f, 1.00f);

@@ -1,0 +1,42 @@
+WallTexture FRZTWL, 256, 2048
+{
+	Patch MM8, 0, 0
+	Patch MM8, 0, 256
+	Patch MM8, 0, 512
+	Patch MM8, 0, 768
+	Patch MM8, 0, 1024
+	Patch MM8, 0, 1280
+	Patch MM8, 0, 1536
+	Patch MM8, 0, 1792
+	Patch RVZTRIM2, 0, 24
+	{
+		Alpha 0.50
+		Style Translucent
+	}
+	Patch RVZTRIM3, 0, 0
+}
+
+Texture "MM8CRACK", 256, 256
+{
+	Patch "MM8", 0, 0
+	Patch "CRAKBLAK", 0, 0
+	{
+		Alpha 0.80
+		Style Translucent
+	}
+	Patch "CRAKBLAK", 0, 128
+	{
+		Alpha 0.80
+		Style Translucent
+	}
+	Patch "CRAKBLAK", 128, 0
+	{
+		Alpha 0.80
+		Style Translucent
+	}
+	Patch "CRAKBLAK", 128, 128
+	{
+		Alpha 0.80
+		Style Translucent
+	}
+}

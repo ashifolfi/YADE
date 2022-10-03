@@ -1,0 +1,13 @@
+//SPZ
+Texture	ERZFAND1	 	Range	ERZFAND4 		Tics 2
+
+//AGZ
+Texture SXLE1 Range SXLE5 Tics 3
+
+//MRZ
+Texture	MRZAIR00 	Range 	MRZAIR15 	Tics 1 //mystic realm portal
+
+//Is this even used???
+Texture	MWATER01	Range	MWATER16	Tics 4 //brown water :3
+
+Texture RBYPRT01 Range RBYPRT20 Tics 2

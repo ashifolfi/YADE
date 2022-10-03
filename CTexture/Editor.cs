@@ -1,12 +1,12 @@
-﻿using System;
-using ImGuiNET;
+﻿using ImGuiNET;
 using Vector2 = System.Numerics.Vector2;
 using YADE.Resource;
+using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 
 namespace YADE.CTexture
 {
-    public class Editor
+	public class Editor
     {
 		public Editor(string path)
         {
@@ -23,8 +23,8 @@ namespace YADE.CTexture
 			windowTitle += " - " + curArchivePath;
 		}
 
-		private String curArchivePath;
-		private String windowTitle = "Texture Editor";
+		private string curArchivePath;
+		private string windowTitle = "Texture Editor";
 		private List<EditorTab> defTabs = new List<EditorTab>();
 
         public void drawWindow(bool open)
@@ -37,7 +37,7 @@ namespace YADE.CTexture
             {
 				foreach (EditorTab tab in defTabs)
 				{
-					tab.draw();
+					tab.draw(curArchivePath);
 				}
 				ImGui.EndTabBar();
 			}
@@ -63,7 +63,7 @@ namespace YADE.CTexture
 
 		private List<patchNode> curPatchList = new List<patchNode>();
 
-		public void draw()
+		public void draw(string path)
         {
 			// and here we assemble the ui
 			if (ImGui.BeginTabItem(currentFile.resName))
@@ -76,7 +76,7 @@ namespace YADE.CTexture
 					ImGui.TableSetupColumn("", ImGuiTableColumnFlags.None | ImGuiTableColumnFlags.WidthFixed, 200);
 
 					ImGui.TableNextColumn();
-					drawTextureList();
+					drawTextureList(path);
 					ImGui.TableNextColumn();
 					drawTextureView();
 					ImGui.TableNextColumn();
@@ -88,25 +88,28 @@ namespace YADE.CTexture
             }
         }
 
-		public void loadTexture(List<CTexPatch> plist)
+		public void loadTexture(List<CTexPatch> plist, string path)
 		{
 			curPatchList = new List<patchNode>();
 			foreach (CTexPatch patch in plist)
 			{
-				curPatchList.Add(new patchNode(patch));
+				curPatchList.Add(new patchNode(patch, path));
 			}
 		}
 
 		// TODO: Implement texture view
 		private void drawTextureView()
 		{
-			if (ImGui.BeginChild("texeditview", new System.Numerics.Vector2(400, ImGui.GetWindowHeight() - 50)))
+			if (ImGui.BeginChild("texeditview", new System.Numerics.Vector2(500, ImGui.GetWindowHeight() - 50)))
 			{
 				// draw each patch in a loop
-
-				foreach (patchNode patch in curPatchList)
+				Vector2 startPos = ImGui.GetCursorPos();
+                foreach (patchNode patch in curPatchList)
                 {
-					ImGui.Text(patch.patch.patchName + Convert.ToString(patch.patch.position));
+					ImGui.SetCursorPos(startPos
+                        + new Vector2(patch.patch.position.X, patch.patch.position.Y));
+                    ImGui.Image(patch.patchPtr, 
+						new Vector2(patch.patchTex.Width, patch.patchTex.Height));
                 }
 
 				ImGui.EndChild();
@@ -135,7 +138,7 @@ namespace YADE.CTexture
 			}
 		}
 
-		private void drawTextureList()
+		private void drawTextureList(string path)
 		{
 			if (ImGui.BeginChild("texview", new System.Numerics.Vector2(200, ImGui.GetWindowHeight() - 50)))
 			{
@@ -152,7 +155,7 @@ namespace YADE.CTexture
 					{
 						if (texNode.drawNode(tex.ctexName, Convert.ToString(tex.size.X + "x" + tex.size.Y), tex.type))
                         {
-							loadTexture(tex.patchList);
+							loadTexture(tex.patchList, path);
                         }
 					}
 
@@ -165,13 +168,12 @@ namespace YADE.CTexture
 
 	public class texNode
 	{
-		public static Boolean drawNode(string name, string size, string type)
+		public static bool drawNode(string name, string size, string type)
 		{
 			bool isSelected = false;
 
 			ImGui.TableNextRow();
 			ImGui.TableNextColumn();
-			//ImGui.Selectable(name, isSelected, ImGuiSelectableFlags.SpanAllColumns | ImGuiSelectableFlags.AllowItemOverlap);
 			isSelected = ImGui.Button(name);
 			ImGui.TableNextColumn();
 			ImGui.Text(size);
@@ -183,14 +185,18 @@ namespace YADE.CTexture
 
 	public class patchNode
     {
-        public patchNode(Resource.CTexPatch res)
+        public patchNode(Resource.CTexPatch res, string path)
         {
             patch = res;
+			patchTex = CTexture.FileSystem.locatePatchGraphic(res.patchName, path);
+			patchPtr = Game1._imGuiRenderer.BindTexture(patchTex);
         }
 
         public Resource.CTexPatch patch;
+		public Texture2D patchTex;
+		public IntPtr patchPtr;
 
-		public virtual Boolean drawNode()
+        public virtual bool drawNode()
 		{
 			bool isSelected = false;
 

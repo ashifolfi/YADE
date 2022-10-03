@@ -11,5 +11,5 @@ var namespace_y_a_d_e_1_1_resource =
     [ "DPHead", "struct_y_a_d_e_1_1_resource_1_1_d_p_head.html", null ],
     [ "DPicture", "class_y_a_d_e_1_1_resource_1_1_d_picture.html", "class_y_a_d_e_1_1_resource_1_1_d_picture" ],
     [ "DPPost", "struct_y_a_d_e_1_1_resource_1_1_d_p_post.html", null ],
-    [ "GenericResource", "class_y_a_d_e_1_1_resource_1_1_generic_resource.html", null ]
+    [ "GenericResource", "class_y_a_d_e_1_1_resource_1_1_generic_resource.html", "class_y_a_d_e_1_1_resource_1_1_generic_resource" ]
 ];

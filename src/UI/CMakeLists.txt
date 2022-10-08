@@ -1,0 +1,9 @@
+list(APPEND YADE_HEADERS
+	${CMAKE_CURRENT_LIST_DIR}/EditorWindow.h
+	${CMAKE_CURRENT_LIST_DIR}/MainMenuBar.h
+	${CMAKE_CURRENT_LIST_DIR}/AboutWindow.h)
+
+list(APPEND YADE_HEADERS
+	${CMAKE_CURRENT_LIST_DIR}/EditorWindow.cpp
+	${CMAKE_CURRENT_LIST_DIR}/MainMenuBar.cpp
+	${CMAKE_CURRENT_LIST_DIR}/AboutWindow.cpp)

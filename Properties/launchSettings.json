@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "YADE": {
-      "commandName": "Project",
-      "workingDirectory": "C:\\Users\\kemon\\Desktop\\YADE\\bin\\Debug\\net6.0"
-    }
-  }
-}

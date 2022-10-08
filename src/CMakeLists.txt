@@ -1,0 +1,6 @@
+#list(APPEND YADE_HEADERS)
+
+include(${CMAKE_CURRENT_LIST_DIR}/UI/CMakeLists.txt)
+
+list(APPEND YADE_SOURCES
+	${CMAKE_CURRENT_LIST_DIR}/main.cpp)

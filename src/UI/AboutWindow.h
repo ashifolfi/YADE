@@ -1,3 +1,7 @@
+
+#ifndef YADE_ABOUTWIN
+#define YADE_ABOUTWIN
+
 #include <stdlib.h>
 
 #include "EditorWindow.h"
@@ -12,3 +16,5 @@ public:
 };
 	
 };
+
+#endif

@@ -15,6 +15,8 @@ EditorWindow::EditorWindow(bool is_open, std::string title, ImVec2 size)
 }
 
 void EditorWindow::drawWindow() {
+	if (!this->show)
+		return;
 	ImGui::SetNextWindowSize(this->winSize, ImGuiCond_Always);
 	if (ImGui::Begin(this->winTitle.c_str(), &this->show))
 	{
@@ -24,4 +26,8 @@ void EditorWindow::drawWindow() {
 }
 
 void EditorWindow::drawContents() {
+}
+
+void EditorWindow::setVisible(bool value) {
+	this->show = value;
 }

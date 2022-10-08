@@ -6,8 +6,8 @@
 
 using namespace yade;
 
-MainMenuBar::MainMenuBar(AboutWindow abWin) {
-	aboutWindow = abWin;
+MainMenuBar::MainMenuBar(AboutWindow *abWin) {
+	this->aboutWindow = abWin;
 }
 
 void MainMenuBar::drawMenuBar() {
@@ -40,7 +40,7 @@ void MainMenuBar::drawMenuBar() {
 	{
 		if (ImGui::MenuItem("About"))
 		{
-			aboutWindow.show = true;
+			aboutWindow->setVisible(true);
 		}
 		ImGui::EndMenu();
 	}

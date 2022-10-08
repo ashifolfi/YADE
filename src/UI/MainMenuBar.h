@@ -1,15 +1,15 @@
-#include "UI/AboutWindow.h"
+#include "AboutWindow.h"
 
 namespace yade
 {
 
-class MainMenuBar{
+class MainMenuBar {
 public:
-	MainMenuBar(AboutWindow abWin);
+	MainMenuBar(AboutWindow *abWin);
 	void drawMenuBar();
-private:
+protected:
 	// TODO: Maybe find a better way of handling this?
-	AboutWindow aboutWindow;
+	AboutWindow *aboutWindow;
 };
 
 }

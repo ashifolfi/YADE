@@ -1,12 +1,8 @@
-﻿/// <summary>
-/// Contains all definitions related to the CTexture Editor GUI component
-/// </summary>
-
-using ImGuiNET;
+﻿using ImGuiNET;
 using Vector2 = System.Numerics.Vector2;
 using YADE.Resource;
 using Microsoft.Xna.Framework.Graphics;
-using System.IO;
+using System.Threading;
 
 namespace YADE.CTexture
 {
@@ -131,11 +127,50 @@ namespace YADE.CTexture
 		/// <param name="path">TODO: We should pull from all open archives/directories</param>
 		public void loadTexture(List<CTexPatch> plist, string path)
 		{
-			curPatchList = new List<patchNode>();
-			foreach (CTexPatch patch in plist)
+            curPatchList = new List<patchNode>(plist.Capacity);
+
+			for (int i = 0; i < plist.Capacity - 1; ++i)
 			{
-				curPatchList.Add(new patchNode(patch, path));
+				curPatchList.Add(null);
 			}
+
+            // load the textures 3 at a time
+            Task[] texthreads = new Task[3];
+
+            for (var i = 0; i < plist.Count - 1; i++)
+            {
+				switch( i % 3 ) {
+					case 0:
+						texthreads[0] = 
+						Task.Run( () => curPatchList[i] = new patchNode(plist[i], path) );
+                        break;
+					case 1:
+						texthreads[1] = 
+						Task.Run( () => curPatchList[i] = new patchNode(plist[i], path) );
+                        break;
+					case 2:
+						texthreads[2] = 
+						Task.Run( () => curPatchList[i] = new patchNode(plist[i], path) );
+						
+						Task.WaitAll(texthreads);
+                        break;
+                }
+            }
+			
+			try
+			{
+				// wait for any remaining threads
+				for (var i = 0; i < 3; i++)
+				{
+					if (texthreads[i] != null)
+                        texthreads[i].Wait();
+                }
+            }
+			catch (AggregateException ex)
+			{
+                Console.WriteLine("[CTexEditor] Exception caught in one or more threads!");
+                Console.WriteLine(ex.ToString());
+            }
 		}
 
 		// TODO: Implement texture view
@@ -147,10 +182,15 @@ namespace YADE.CTexture
 				Vector2 startPos = ImGui.GetCursorPos();
                 foreach (patchNode patch in curPatchList)
                 {
-					ImGui.SetCursorPos(startPos
+					if (patch == null)
+                        continue;
+                    ImGui.SetCursorPos(startPos
                         + new Vector2(patch.patch.position.X, patch.patch.position.Y));
-                    ImGui.Image(patch.patchPtr, 
-						new Vector2(patch.patchTex.Width, patch.patchTex.Height));
+
+					// handle extra values
+
+                    ImGui.Image(patch.getPointer(), 
+						new Vector2(patch.getTexture().Width, patch.getTexture().Height));
                 }
 
 				ImGui.EndChild();
@@ -170,7 +210,10 @@ namespace YADE.CTexture
 
 					foreach (patchNode patch in curPatchList)
 					{
-						patch.drawNode();
+						if (patch == null)
+                            continue;
+
+                        patch.drawNode();
 					}
 
 					ImGui.EndTable();
@@ -207,10 +250,7 @@ namespace YADE.CTexture
 		}
 	}
 
-    /// <summary>
-    /// Class for the CTexture editor texture list
-    /// </summary>
-    public class texNode
+    internal class texNode
 	{
         /// <summary>
         /// Used by main editor to draw the node into the texture list
@@ -231,10 +271,7 @@ namespace YADE.CTexture
 		}
 	}
 
-	/// <summary>
-	/// Class for the CTexture editor patch list
-	/// </summary>
-	public class patchNode
+	internal class patchNode
     {
 		/// <summary>
 		/// Constructor for patch list entries
@@ -244,27 +281,37 @@ namespace YADE.CTexture
         public patchNode(Resource.CTexPatch res, string path)
         {
             patch = res;
-			patchTex = CTexture.FileSystem.locatePatchGraphic(res.patchName, path);
-			patchPtr = Game1._imGuiRenderer.BindTexture(patchTex);
+			patchStream = CTexture.FileSystem.locatePatchGraphic(res.patchName, path);
         }
 
 		/// <summary>
 		/// resource pointer
 		/// </summary>
         public Resource.CTexPatch patch;
-		/// <summary>
-		/// patch graphic pointer
-		/// </summary>
-		public Texture2D patchTex;
-		/// <summary>
-		/// integer pointer for ImGui
-		/// </summary>
-		public IntPtr patchPtr;
 
-		/// <summary>
-		/// Used by main editor to draw the node into the patch list
-		/// </summary>
-		/// <returns>Boolean corresponding to selection status</returns>
+		private Texture2D patchTex;
+		private IntPtr patchPtr;
+        private Stream patchStream;
+
+		public Texture2D getTexture() {
+            if (patchTex == null) {
+				if (patchStream != null)
+                	patchTex = new Texture2D(Game1._graphics.GraphicsDevice, 1, 1);
+                patchTex = Texture2D.FromStream(Game1._graphics.GraphicsDevice, patchStream);
+				patchPtr = Game1._imGuiRenderer.BindTexture(patchTex);
+            }
+            return patchTex;
+        }
+
+		public IntPtr getPointer() {
+            getTexture();
+            return patchPtr;
+        }
+
+        /// <summary>
+        /// Used by main editor to draw the node into the patch list
+        /// </summary>
+        /// <returns>Boolean corresponding to selection status</returns>
         public virtual bool drawNode()
 		{
 			bool isSelected = false;

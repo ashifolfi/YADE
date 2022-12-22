@@ -1,10 +1,6 @@
 ﻿//#define DEBUG_EXTRA
 // uncomment the above to print patch adds
 
-/// <summary>
-/// Contains all definitions related to the CTexture Editor FileSystem component
-/// </summary>
-
 using Microsoft.Xna.Framework.Graphics;
 using FileTypeChecker;
 using System.Text.RegularExpressions;
@@ -15,6 +11,7 @@ using FileTypeChecker.Types;
 
 namespace YADE.CTexture
 {
+    /// <summary></summary>
     public class FileSystem
     {
         /// <summary>
@@ -177,7 +174,7 @@ namespace YADE.CTexture
         /// <param name="name">Patch name to look for</param>
         /// <param name="path">TODO: REMOVE THIS | path to the folder where we should look</param>
         /// <returns>The requested patch texture data (when found) or a blank texture data (When not found)</returns>
-        public static Texture2D locatePatchGraphic(string name, string path)
+        public static Stream locatePatchGraphic(string name, string path)
         {
             // load the file as a filestream
             FileStream patchStream;
@@ -186,34 +183,49 @@ namespace YADE.CTexture
                 // IDEA: This could just iterate through a list of known filetypes and directories tbh
                 // little bit of a mess here but we need to wildcard the name because of extensions
                 DirectoryInfo dir = new DirectoryInfo(path);
-#if WINDOWS
-                FileInfo[] fi = dir.GetFiles(@"*\\" + name + @"*");
-#else
-                FileInfo[] fi = dir.GetFiles(@"*/" + name + @"*");
-#endif
-                if (fi[1] == null)
+// #if WINDOWS
+//                 FileInfo[] fi = dir.GetFiles(@"*\\" + name + @"*");
+// #else
+                FileInfo[] fi = dir.GetFiles(name + @"*", SearchOption.AllDirectories);
+// #endif
+                if (fi.Length == 0)
                 {
                     // just in case this turns out to be a wackass edgecase
-                    patchStream = File.OpenRead(path + "/Patches/" + name);
+                    patchStream = File.Open(path + "/Patches/" + name, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 }
                 else
-                    patchStream = File.OpenRead(fi[1].FullName);
+                    patchStream = File.Open(fi[0].FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("[CTexture] Patch loading failed! Does the patch exist?");
-                return new Texture2D(Game1._graphics.GraphicsDevice, 1, 1);
+                Console.WriteLine(ex.Message);
+                return null;
             }
+            Console.WriteLine(name);
             // determine what type to return from mimetype on the file
             // kinda dangerous because if we hit a file that isn't a graphics lump but also not a standard picture
-            // we are GOING TO CRASH due to my lack of any error handling in DPicture.cs right now
-            if (FileTypeValidator.IsImage(patchStream))
-                return Texture2D.FromStream(Game1._graphics.GraphicsDevice, patchStream);
-            else
-            {
-                // not an image? ok let's assume it's a DPicture format
-                DPicture dPicture = new DPicture(patchStream);
-                return dPicture.texture;
+            // we are GOING TO CRASH due to my lack of any error handling in DPicture.cs right no
+            try {
+                if (FileTypeValidator.IsImage(patchStream))
+                {
+                    Stream imgstream = null;
+                    patchStream.CopyTo(imgstream);
+                    return imgstream;
+                }
+                else
+                {
+                    // not an image? ok let's assume it's a DPicture format
+                    DPicture dPicture = new DPicture(name, patchStream);
+                    patchStream.Close();
+                    return dPicture.imgstream;
+                }
+            }
+            catch(Exception ex) {
+                // filetypevalidator broke so it's a doom picture
+                DPicture dPicture = new DPicture(name, patchStream);
+                patchStream.Close();
+                return dPicture.imgstream;
             }
         }
     }

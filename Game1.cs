@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿#pragma warning disable 1591
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.IO;
 using ImGuiNET;
 using Num = System.Numerics;
 
@@ -17,7 +16,9 @@ namespace YADE
         public static GraphicsDeviceManager _graphics;
         public static ImGuiRenderer _imGuiRenderer;
 
-        static public List<Archive.Editor> openEditors = new List<Archive.Editor>();
+        static public EnvManager environment = new EnvManager();
+
+        static public UI.YADEDockspace globaldock = new UI.YADEDockspace();
 
         static public uint dockid;
 
@@ -95,13 +96,15 @@ namespace YADE
             if (UI.AboutWindow.is_open)
                 UI.AboutWindow.drawWindow();
 
+            globaldock.render();
+
             // draw all open editors
-            foreach (Archive.Editor editor in openEditors) {
+            foreach (Archive.Editor editor in environment.openEditors) {
                 // put this here for now
                 // destroy the editor on close as we've closed the file.
                 if (!editor.is_open)
                 {
-                    openEditors.Remove(editor);
+                    environment.openEditors.Remove(editor);
                     break;
                 }
                 else

@@ -1,8 +1,4 @@
-﻿/// <summary>
-/// Class definitions for Archive related resources
-/// </summary>
-
-using System;
+﻿using System;
 using System.Xml.Linq;
 using ImGuiNET;
 

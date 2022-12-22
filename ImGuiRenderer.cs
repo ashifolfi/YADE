@@ -9,7 +9,7 @@ using ImGuiNET;
 namespace YADE
 {
     /// <summary>
-    /// ImGui renderer for use with XNA-likes (FNA & MonoGame)
+    /// ImGui renderer for use with XNA-likes (FNA and MonoGame)
     /// </summary>
     public class ImGuiRenderer
     {
@@ -40,6 +40,11 @@ namespace YADE
 
         private List<int> _keys = new List<int>();
 
+/// <summary>
+/// constructor
+/// </summary>
+/// <param name="game"></param>
+/// <exception cref="ArgumentNullException"></exception>
         public ImGuiRenderer(Game game)
         {
             var context = ImGui.CreateContext();
